@@ -15,7 +15,7 @@ public class Account extends Customer {
     private Double soDu = 100D;
     private static int countSoTK = 10000;
     static Vector<Transaction> transactionDiary = new Vector<Transaction>(10, 5);
-    String menu[] = {"Menu 3", "Giao dịch tại ATM Vietcombank", "Rút tiền", "Chuyển tiền", "Đổi pin", "Xem số dư", "Xem nhật ký giao dịch", "Thoát"};
+    String menu[] = {"Menu 3", "Giao dịch tại ATM Vietcombank", "Rút tiền", "Chuyển tiền", "Đổi pin", "Xem số dư", "Xem nhật ký giao dịch", "Quay lại Menu 1"};
 
     public Account() {
         super();
@@ -204,8 +204,11 @@ public class Account extends Customer {
                 viewTransactionDiary();
                 break;
             case 6:
-                System.out.println("\t\tVietcombank ATM hẹn gặp lại quý khách !");
-                System.exit(0);
+            	 Bank b = new Bank(Bank.mc);
+                 b.run();
+                 break;
+               // System.out.println("\t\tVietcombank ATM hẹn gặp lại quý khách !");
+               // System.exit(0);
         }
     }
 
