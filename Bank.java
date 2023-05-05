@@ -20,15 +20,12 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author An Nguyen
- */
+
 public class Bank extends Menu {
-// Tạo list Tài khoản và khách hàng 
+
     private static Vector<Account> aList = new Vector<Account>(20, 10);
     private static Vector<Customer> cList = new Vector<Customer>(20, 10);
-    static String[] mc = {"Menu 1", "Vietcombank banking counters welcome !", "Dang Ky Thanh Vien", "Dang Nhap Thanh Vien", "Nap Tien Vao Tai Khoan", "Ket Thuc"};
+    static String[] mc = {"Menu 1", "Vietcombank banking counters welcome !", "Đăng kí thành viên", "Đăng nhập thành viên", "Nạp tiền vào tài khoản", "Kết thúc"};
     Customer curenrCustomer;
     Account currentAccount;
 
@@ -36,7 +33,7 @@ public class Bank extends Menu {
         super(mc);
         loadData("account.txt");
     }
-// Chưa hiểu 
+
     public Bank(String[] mang) {
         super(mc);
     }
@@ -51,44 +48,44 @@ public class Bank extends Menu {
             case 2:
                 try {
                     curenrCustomer = customerLogIn();
-                    System.out.println(">>> Dang Nhap Thanh Cong, Xin Chao " + curenrCustomer.getTen() + " !");
+                    System.out.println(">>> Đăng nhập thành công, xin chào " + curenrCustomer.getTen() + " !");
                 } catch (Exception e) {
-                    System.out.println("Loi Dang Nhap: " + e.getMessage());
+                    System.out.println("Lỗi đăng nhập: " + e.getMessage());
                 }
                 try {
                     curenrCustomer.setMenu();
                     curenrCustomer.run();
                 } catch (Exception e) {
-                    System.out.println("Loi Menu: " + e.toString());
+                    System.out.println("Lỗi menu: " + e.toString());
                 }
                 break;
             case 3:
                 doDepositCash();
                 saveData("account.txt");
                 break;
+           // case 4:
+               // viewCustomerList();
+               // break;
             case 4:
-                viewCustomerList();
-                break;
-            case 5:
-//                saveData("account.txt");
-                System.out.println("\t\tVietcombank Hen Gap Lai Quy Khach !");
+               saveData("account.txt");
+                System.out.println("\t\tVietcombank hẹn gặp lại quý khách !");
                 System.exit(0);
         }
     }
 
     public void customerRegistration() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n------- Dang Ky Thanh Vien -------");
+        System.out.println("\n------- Đăng kí thành viên -------");
 
         String ten;
         int cmnd = 0;
         String ngaySinh = null;
         try {
-            System.out.println("Nhap Ten");
+            System.out.println("Nhập tên");
             ten = sc.nextLine();
-            System.out.println("Nhap CMND");
+            System.out.println("Nhập cmnd");
             cmnd = Integer.parseInt(sc.nextLine());
-            System.out.println("Nhap Ngay Sinh");
+            System.out.println("Nhập ngày sinh");
             ngaySinh = sc.nextLine();
             Customer c = new Customer(ten, cmnd, ngaySinh);
             cList.add(c);
@@ -100,75 +97,75 @@ public class Bank extends Menu {
             double soDu = 100;
             Account a = new Account(c, soDu, pin);
             aList.add(a);
-            System.out.println("\n>>> Dang Ky Tai Khoan Thanh Cong, Xin Chao " + ten + " !");
+            System.out.println("\n>>> Đăng kí tài khoản thành công, xin chào " + ten + " !");
             System.out.println("\t------- *** -------");
-            System.out.println("Ma Khach Hang Cua Ban: " + c.getMaKH() + "\nMat Khau Mac Dinh: " + c.getMatKhau());
-            System.out.println("Ban Duoc Cap So Tai Khoan: " + a.getSoTK() + "\nPin Mac Dinh: " + a.getPin() + "\nSo Du Mac Dinh: " + a.getSoDu());
+            System.out.println("Mã KH của bạn: " + c.getMaKH() + "\nMật khẩu mặc định: " + c.getMatKhau());
+            System.out.println("Bạn được cấp số tài khoản: " + a.getSoTK() + "\nPin mặc định: " + a.getPin() + "\nSố dư Mặc định: " + a.getSoDu());
         } catch (Exception e) {
-            System.out.println("Loi Nhap Sai Du Lieu: " + e.getMessage());
+            System.out.println("Lỗi nhập sai dữ liệu: " + e.getMessage());
         }
     }
-// Đang nhap thanh vien
+
     public Customer customerLogIn() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n------- Dang Nhap Thanh Vien -------");
-        System.out.println("Ma Khach Hang: ");
+        System.out.println("\n------- Đăng nhập thành viên -------");
+        System.out.println("Mã khách hàng: ");
         String maKH = sc.nextLine();
-        System.out.println("Mat Khau: ");
+        System.out.println("Mật khẩu: ");
         String matKhau = sc.nextLine();
         for (Customer c : cList) {
             if (maKH.equals(c.maKH) && matKhau.equals(c.matKhau)) {
                 return c;
             }
         }
-        throw new RuntimeException("Tai Khoan Va Mat Khau Khong Dung !");
+        throw new RuntimeException("Tài khoản và mật khẩu không đúng !");
     }
-// Nạp tiền vào tài khoản thành công 
+
     public void doDepositCash() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n------- Nap Tien Vao Tai Khoan -------");
-        System.out.println("Nhap So Tai Khoan: ");
+        System.out.println("\n------- Nạp tiền vào tài khoản -------");
+        System.out.println("Nhập số tài khoản: ");
         int stk = sc.nextInt();
         Account a = getAccount(stk);
         double tienNop = 0;
         try {
             tienNop = depositCash(a);
         } catch (Exception e) {
-            System.out.println("Loi: " + e.getMessage());
+            System.out.println("Lỗi: " + e.getMessage());
             return;
         }
         double soDuCu = a.getSoDu();
         a.setSoDu(tienNop + soDuCu);
-        System.out.println(">>> Nap Tien Vao Tai Khoan " + a.getSoTK() + " Thanh Cong !");
+        System.out.println(">>> Nạp tiền vào tài khoản " + a.getSoTK() + " thành công !");
     }
-// Nạp không thành công
+
     public double depositCash(Account a) {
         if (a == null) {
-            throw new RuntimeException("So Tai Khoan Khong Ton Tai !");
+            throw new RuntimeException("Số tài khoản không tồn tại !");
         }
         Scanner sc = new Scanner(System.in);
         double tienNop = 0;
-        System.out.println("So Tien Gui Vao Tai Khoan: ");
+        System.out.println("Số tiền gửi vào tài khoản: ");
         try {
             tienNop = Double.parseDouble(sc.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Tien Phai La Kieu So !");
+            System.out.println("Tiền phải là  kiểu số !");
         }
-        String mota = "Nop Tien Vao Tai Khoan";
+        String mota = "Nạp tiền vào Tài khoản";
         if (tienNop <= 0) {
-            throw new RuntimeException("Tien Nap Vao Tai Khoan Phai > 0");
+            throw new RuntimeException("Tiền nạp vào tài khoản phải > 0");
         }
-        a.transactionDiary.add(new Transaction(a, tienNop, "Nap Tien", mota));
+        a.transactionDiary.add(new Transaction(a, tienNop, "Nạp Tiền", mota));
         return tienNop;
     }
-// Danh sách thành viên
+
     public void viewCustomerList() {
-        System.out.println("\n------- Danh Sach Thanh Vien -------");
+        System.out.println("\n------- Danh sách thành viên -------");
         if (cList.size() == 0) {
-            System.out.println("Danh Sach Rong !");
+            System.out.println("Danh sách rỗng !");
         } else {
             Collections.sort(cList);
-            System.out.printf("%-7s| %-16s| %-15s", "Ma KH", "Ho Ten", "Mat");
+            System.out.printf("%-7s| %-16s| %-15s", "MÃ KH", "Họ tên", "Mật khẩu");
             for (int i = 0; i < cList.size(); i++) {
                 if (i < cList.size() - 1) {
                     if ((cList.get(i).getMaKH()).equals(cList.get(i + 1).getMaKH())) {
@@ -236,7 +233,7 @@ public class Bank extends Menu {
         int pin = Integer.parseInt(array[6]);
         double soDu = Double.parseDouble(array[7]);
         int count = soTK;
-        //Đảm bảo CountSoTK cuối cùng khi load xong file là lớn nhất để không bị trùng, vì file sắp xếp theo tên Khách hàng
+        
         if (count >= Account.getCountSoTK()) {
             Account.setCountSoTK(++count);
         }
@@ -252,7 +249,7 @@ public class Bank extends Menu {
         return null;
     }
 
-    public static void addAcountInaList(Account a) {
+    public static void addAccountInaList(Account a) {
         aList.add(a);
     }
 
@@ -263,7 +260,7 @@ public class Bank extends Menu {
     public static void setaList(Vector<Account> aList) {
         Bank.aList = aList;
     }
-// Lấy custeme list
+
     public static Vector<Customer> getcList() {
         return cList;
     }
